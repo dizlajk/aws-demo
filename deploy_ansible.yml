@@ -1,0 +1,6 @@
+- hosts: localhost
+  tasks:
+    - import_role:
+        name: sam_deploy
+    - import_role:
+        name: web_deploy

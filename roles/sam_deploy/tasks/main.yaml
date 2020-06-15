@@ -1,0 +1,9 @@
+- s3_bucket:
+    name: demo.template.bucket
+    state: present
+- name: build sam
+  command: sam build --template ./template.yaml --build-dir ./aws-sam/build
+- name: package sam
+  command: sam package --template-file ./.aws-sam/build/template.yaml --output-template-file ./.aws-sam/build/packaged-template.yaml --s3-bucket demo.template.bucket
+- name: deploy sam
+  command: sam deploy --template-file ./.aws-sam/build/packaged-template.yaml --stack-name demo --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM --no-fail-on-empty-changeset --parameter-overrides DemoS3Web=demo.web.bucket

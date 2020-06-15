@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Demo</title>
+</head>
+<h1>Weather in Prague</h1>
+<body>
+<table>
+  <thead>
+  <tr>
+    <td>Temperature (K)</td>
+    <td>Feels like (K)</td>
+    <td>Max temperature (K)</td>
+    <td>Min temperature (K)</td>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td id="temp"></td>
+    <td id="feel"></td>
+    <td id="min"></td>
+    <td id="max"></td>
+  </tr>
+  </tbody>
+</table>
+<p id ="results"></p>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+  $(document).ready(function() {
+      $.get('./data.json', (data) => {
+        let json = JSON.parse(data);
+        $("#temp").html(json.main.temp)
+        $("#feel").html(json.main.feels_like)
+        $("#min").html(json.main.temp_min)
+        $("#max").html(json.main.temp_max)
+      });
+  })
+</script>
+
+
+
+</body>
+</html>

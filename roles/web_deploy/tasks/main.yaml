@@ -1,0 +1,12 @@
+- s3_bucket:
+    name: demo.web.bucket
+    state: present
+    policy: "{{ lookup('file','policy_DemoS3WebBucket.json') }}"
+- name: Simple PUT operation
+  aws_s3:
+    bucket: demo.web.bucket
+    object: /index.html
+    src: ./web/index.html
+    mode: put
+- name: demo.web.bucket
+  command: aws s3 website s3://demo.web.bucket/ --index-document index.html --error-document index.html

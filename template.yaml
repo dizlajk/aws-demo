@@ -1,0 +1,58 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  AWS
+
+  Sample SAM Template for AWS
+
+Globals:
+  Function:
+    Timeout: 20
+
+Parameters:
+  DemoS3Web:
+    Type: String
+
+Resources:
+  LoadDataFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: LoadDataFunction
+      Handler: demo.App::handleRequest
+      Runtime: java8
+      MemorySize: 512
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /load
+            Method: get
+        LoadDataSchedule:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 10 * * ? *)
+      Policies:
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:PutObject
+            Resource:
+              - Fn::Sub:
+                  - arn:${AWS::Partition}:s3:::${bucketName}
+                  - bucketName:
+                      Ref: DemoS3Web
+              - Fn::Sub:
+                  - arn:${AWS::Partition}:s3:::${bucketName}/*
+                  - bucketName:
+                      Ref: DemoS3Web
+
+Outputs:
+  LoadDataAPI:
+    Description: "API Gateway endpoint URL for Load data function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/load/"
+  LoadDataFunction:
+    Description: "Load data Lambda Function ARN"
+    Value: !GetAtt LoadDataFunction.Arn
+  LoadDataIamRole:
+    Description: "Implicit IAM Role created for Load data function"
+    Value: !GetAtt LoadDataFunctionRole.Arn
