@@ -1,4 +1,4 @@
-#AWS demo
+# AWS demo
 Simple SAM application with a frontend deployed to s3 bucket.
 SAM app consists of one lambda function scheduled to run every day at 10AM, also callable by API gateway. 
 Frontend part is just index file that loads data stored on s3 and displays them.
